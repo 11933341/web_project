@@ -1,4 +1,4 @@
-<?php 
+<?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
@@ -15,13 +15,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $ingredients = $_POST['ingredients'];
     $steps = $_POST['steps'];
 
-    $sql = "INSERT INTO recipes (title, description, ingredients, steps) 
-            VALUES ('$title', '$description', '$ingredients', '$steps')";
+    // Prepare and bind
+    $stmt = $conn->prepare("INSERT INTO recipes (title, description, ingredients, steps) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $title, $description, $ingredients, $steps);
+    // $sql = "INSERT INTO recipes (title, description, ingredients, steps) 
+    //         VALUES ('$title', '$description', '$ingredients', '$steps')";
 
-    if ($conn->query($sql) === TRUE) {
+    if ($stmt->execute()) {
         echo json_encode(['success' => true, 'message' => 'Recipe added successfully!']);
     } else {
-        echo json_encode(['success' => false, 'message' => 'Error: ' . $conn->error]);
+        echo json_encode(['success' => false, 'message' => 'Error: ' . $stmt->error]);
     }
     exit;
 }

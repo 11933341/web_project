@@ -31,6 +31,14 @@
     <script>
         document.getElementById('add-recipe-form').addEventListener('submit', function(e) {
             e.preventDefault(); // Prevent the default form submission
+            const title = this.title.value.trim();
+            const description = this.description.value.trim();
+            const ingredients = this.ingredients.value.trim();
+            const steps = this.steps.value.trim();
+            if (!title || !description || !ingredients || !steps) {
+                alert('All fields are required.');
+                return;
+            }
             const form = document.getElementById('add-recipe-form');
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
