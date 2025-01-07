@@ -1,0 +1,28 @@
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# Environment variables
+.env
+
+# IDE configurations
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# PHPStorm
+nbproject/
+# Exclude sensitive credentials
+db.php
+
+# Exclude XAMPP temp files
+xampp/
+
+# Exclude temporary files
+*.tmp
