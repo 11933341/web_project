@@ -53,6 +53,9 @@
                         messageDiv.textContent = data.message;
                         messageDiv.style.color = 'green';
                         this.reset(); // Clear the form
+                        if (window.opener) {
+                            window.opener.fetchRecipes(); // Call the homepage's fetch function
+                        }
                     } else {
                         messageDiv.textContent = data.message;
                         messageDiv.style.color = 'red';
