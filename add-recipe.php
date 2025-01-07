@@ -39,16 +39,6 @@
                 alert('All fields are required.');
                 return;
             }
-            const form = document.getElementById('add-recipe-form');
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const title = form.querySelector('input[name="title"]').value.trim();
-                if (!title) {
-                    alert('Title is required.');
-                    return;
-                }
-                // Proceed with the fetch call...
-            });
 
             const formData = new FormData(this);
 
