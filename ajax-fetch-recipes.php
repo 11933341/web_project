@@ -1,18 +1,18 @@
 <?php
 include 'db.php';
-
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 header('Content-Type: application/json');
-$query = isset($_Get['query']) ? $_Get['query'] : '';
 
+$query = isset($_GET['query']) ? $_GET['query'] : '';
 if ($query) {
-    $sql = $conn->prepare("SElect * from recipes where title like ? OR    ingredient like?order by id desc");
-    $searchTerm='%'.$query.'%';
-    $sql->bind_param("ss",$searchTerm,$searchTerm);
+    $sql = $conn->prepare("select * from recipes where title like ? OR ingredients like ? order by id desc");
+    $searchTerm = '%' . $query . '%';
+    $sql->bind_param("ss", $searchTerm, $searchTerm);
     $sql->execute();
-    $result=$sql->get_result();
-
-}else{
-    $result=$conn->query("select * from recipes order by id desc");
+    $result = $sql->get_result();
+} else {
+    $result = $conn->query("select * from recipes order by id desc");
 }
 // $sql->execute();
 // $result=$sql->get_result();

@@ -29,6 +29,7 @@
             fetch(`ajax-fetch-recipes.php?query=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data);
                     const recipesDiv = document.getElementById('recipes');
                     recipesDiv.innerHTML = ''; // Clear existing recipes
                     if (data.length === 0) {
@@ -54,6 +55,7 @@
         //add even listener to search button
         document.getElementById('search-button').addEventListener('click', () => {
             const query = document.getElementById('search-input').value.trim();
+            console.log('Search query:', query); // Log the query
             fetchRecipes(query);
         })
         // Optionally, refresh recipes periodically
