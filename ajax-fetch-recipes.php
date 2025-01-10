@@ -2,9 +2,21 @@
 include 'db.php';
 
 header('Content-Type: application/json');
+$query = isset($_Get['query']) ? $_Get['query'] : '';
 
-$sql = "SELECT * FROM recipes ORDER BY id DESC";
-$result = $conn->query($sql);
+if ($query) {
+    $sql = $conn->prepare("SElect * from recipes where title like ? OR    ingredient like?order by id desc");
+    $searchTerm='%'.$query.'%';
+    $sql->bind_param("ss",$searchTerm,$searchTerm);
+
+}else{
+    $sql=$conn->prepare("select * from recipes order by id desc");
+}
+$sql->execute();
+$result=$sql->get_result();
+
+// $sql = "SELECT * FROM recipes ORDER BY id DESC";
+// $result = $conn->query($sql);
 
 $recipes = [];
 if ($result->num_rows > 0) {
@@ -15,4 +27,3 @@ if ($result->num_rows > 0) {
 
 echo json_encode($recipes);
 exit;
-?>

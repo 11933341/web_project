@@ -16,13 +16,26 @@
     </div>
     <div id="recipes"></div>
 
+    <!-- search                                                      bar-->
+    <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Search...">
+        <button id="search-button">search</button>
+    </div>
+    <div id="recipes"></div><!-- Recipes will be displayed here-->
+
+
     <script>
-        function fetchRecipes() {
-            fetch('ajax-fetch-recipes.php')
+        // Function to fetch recipes (with or without search query)
+        function fetchRecipes(query = '') {
+            fetch(`ajax-fetch-recipes.php?query=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(data => {
                     const recipesDiv = document.getElementById('recipes');
                     recipesDiv.innerHTML = ''; // Clear existing recipes
+                    if (data.length === 0) {
+                        recipesDiv.innerHTML = '<p>No recipes found.<p>';
+                        return;
+                    }
                     data.forEach(recipe => {
                         const recipeCard = `
                             <div class="recipe-card">
@@ -39,7 +52,11 @@
 
         // Fetch recipes on page load
         fetchRecipes();
-
+        //add even listener to search button
+        document.getElementById('search-button').addEventListener('click', () => {
+            const query = document.getElementById('search-input').value.trim();
+            fetchRecipes(query);
+        })
         // Optionally, refresh recipes periodically
         setInterval(fetchRecipes, 10000); // Fetch recipes every 10 seconds
     </script>
