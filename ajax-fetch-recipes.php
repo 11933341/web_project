@@ -8,12 +8,14 @@ if ($query) {
     $sql = $conn->prepare("SElect * from recipes where title like ? OR    ingredient like?order by id desc");
     $searchTerm='%'.$query.'%';
     $sql->bind_param("ss",$searchTerm,$searchTerm);
+    $sql->execute();
+    $result=$sql->get_result();
 
 }else{
-    $sql=$conn->prepare("select * from recipes order by id desc");
+    $result=$conn->query("select * from recipes order by id desc");
 }
-$sql->execute();
-$result=$sql->get_result();
+// $sql->execute();
+// $result=$sql->get_result();
 
 // $sql = "SELECT * FROM recipes ORDER BY id DESC";
 // $result = $conn->query($sql);

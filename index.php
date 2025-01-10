@@ -16,12 +16,11 @@
     </div>
     <div id="recipes"></div>
 
-    <!-- search                                                      bar-->
+    <!-- search bar-->
     <div class="search-bar">
         <input type="text" id="search-input" placeholder="Search...">
         <button id="search-button">search</button>
     </div>
-    <div id="recipes"></div><!-- Recipes will be displayed here-->
 
 
     <script>
@@ -33,7 +32,7 @@
                     const recipesDiv = document.getElementById('recipes');
                     recipesDiv.innerHTML = ''; // Clear existing recipes
                     if (data.length === 0) {
-                        recipesDiv.innerHTML = '<p>No recipes found.<p>';
+                        recipesDiv.innerHTML = '<p>No recipes found.</p>';
                         return;
                     }
                     data.forEach(recipe => {
@@ -58,7 +57,7 @@
             fetchRecipes(query);
         })
         // Optionally, refresh recipes periodically
-        setInterval(fetchRecipes, 10000); // Fetch recipes every 10 seconds
+        // setInterval(fetchRecipes, 10000); // Fetch recipes every 10 seconds
     </script>
 
 </body>
