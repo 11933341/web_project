@@ -1,18 +1,4 @@
-<?php
-include 'db.php';
-session_start();
-
-if (!isset($_SESSION['role'])) {
-    header('Location: login.php');
-    exit;
-}
-
-if ($_SESSION['role'] !== 'admin') {
-    die("Access denied: Admins only.");
-}
-?>
-
-
+<?php include 'db.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,51 +6,56 @@ if ($_SESSION['role'] !== 'admin') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Recipe</title>
-    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
-    <h1><?php echo $isAdmin ? 'Add Recipe' : 'Request Recipe'; ?></h1>
-    <form id="add-recipe-form">
-        <label for="title">Title:</label>
-        <input type="text" name="title" placeholder="Enter recipe title" required>
-
-        <label for="description">Description:</label>
-        <textarea name="description" placeholder="Enter a brief description of the recipe" required></textarea>
-
-        <label for="ingredients">Ingredients (separated by commas):</label>
-        <textarea name="ingredients" placeholder="e.g., sugar, flour, eggs" required></textarea>
-
-        <label for="steps">Steps (separated by commas):</label>
-        <textarea name="steps" placeholder="e.g., mix ingredients, bake at 350°F" required></textarea>
-
-        <button type="submit"><?php echo $isAdmin ? 'Add Recipe' : 'Submit Request'; ?></button>
-    </form>
-    <div id="response-message"></div>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Add Recipe</h1>
+        <form id="add-recipe-form" class="card p-4">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" name="title" placeholder="Enter recipe title" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" name="description" placeholder="Enter a brief description of the recipe" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="ingredients" class="form-label">Ingredients</label>
+                <textarea class="form-control" name="ingredients" placeholder="e.g., sugar, flour, eggs" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="steps" class="form-label">Steps</label>
+                <textarea class="form-control" name="steps" placeholder="e.g., mix ingredients, bake at 350°F" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Add Recipe</button>
+        </form>
+        <div id="response-message" class="mt-3"></div>
+    </div>
 
     <script>
         document.getElementById('add-recipe-form').addEventListener('submit', function(e) {
-            e.preventDefault(); // Prevent default form submission
-
+            e.preventDefault();
             const formData = new FormData(this);
-
-            fetch('<?php echo $isAdmin ? "ajax-add-recipe.php" : "ajax-add-request.php"; ?>', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    const messageDiv = document.getElementById('response-message');
-                    if (data.success) {
-                        messageDiv.textContent = data.message;
-                        messageDiv.style.color = 'green';
-                        this.reset(); // Clear the form
-                    } else {
-                        messageDiv.textContent = data.message;
-                        messageDiv.style.color = 'red';
-                    }
-                })
-                .catch(error => console.error('Error:', error));
+            fetch('ajax-add-recipe.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const messageDiv = document.getElementById('response-message');
+                if (data.success) {
+                    messageDiv.textContent = data.message;
+                    messageDiv.style.color = 'green';
+                    this.reset();
+                } else {
+                    messageDiv.textContent = data.message;
+                    messageDiv.style.color = 'red';
+                }
+            })
+            .catch(error => console.error('Error:', error));
         });
     </script>
 </body>

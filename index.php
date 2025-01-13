@@ -1,4 +1,15 @@
-<?php include 'db.php'; ?>
+<?php
+include 'db.php';
+session_start(); // Start session
+
+// Check if user is logged in
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$role = $_SESSION['role'] ?? null;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,26 +17,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipe Sharing</title>
-    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
-    <h1>Recipe Sharing</h1>
-    <div class="add-recipe-link">
-        <a href="add-recipe.php">Add Recipe</a>
-        <?php if ($_SESSION['role'] === 'admin') { ?>
-            <a href="manage-users.php">Manage Users</a> 
-        <?php } ?>
-        <a href="logout.php" class="logout">Logout</a> <!-- Logout link -->
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Recipe Sharing</h1>
+        <div class="text-center mb-4">
+            <?php if ($role === 'admin') { ?>
+                <a href="add-recipe.php" class="btn btn-primary">Add Recipe</a>
+                <a href="manage-users.php" class="btn btn-secondary">Manage Users</a>
+            <?php } ?>
+            <a href="logout.php" class="btn btn-danger">Logout</a>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <input type="text" id="search-input" class="form-control mb-3" placeholder="Search...">
+                <button id="search-button" class="btn btn-outline-primary w-100">Search</button>
+            </div>
+        </div>
+        <div id="recipes" class="row gy-3">
+            <!-- Recipes will be displayed here -->
+        </div>
     </div>
-    <div id="recipes"></div>
-
-    <!-- search bar-->
-    <div class="search-bar">
-        <input type="text" id="search-input" placeholder="Search...">
-        <button id="search-button">search</button>
-    </div>
-
 
     <script>
         // Function to fetch recipes (with or without search query)
@@ -41,64 +56,31 @@
                     }
                     data.forEach(recipe => {
                         const recipeCard = `
-                    <div class="recipe-card" data-id="${recipe.id}">
-                        <h2>${recipe.title}</h2>
-                        <p>${recipe.description}</p>
-                        <a href="view-recipe.php?id=${recipe.id}">View Recipe</a>
-                        <button class="delete-button" data-id="${recipe.id}">Delete</button>
-                    </div>
-                `;
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${recipe.title}</h5>
+                                        <p class="card-text">${recipe.description}</p>
+                                        <a href="view-recipe.php?id=${recipe.id}" class="btn btn-primary">View Recipe</a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
                         recipesDiv.innerHTML += recipeCard;
-                    });
-
-                    // Attach event listeners to delete buttons
-                    document.querySelectorAll('.delete-button').forEach(button => {
-                        button.addEventListener('click', function() {
-                            const recipeId = this.getAttribute('data-id');
-                            deleteRecipe(recipeId);
-                        });
                     });
                 })
                 .catch(error => console.error('Error fetching recipes:', error));
         }
 
-        // Function to delete a recipe
-        function deleteRecipe(recipeId) {
-            if (!confirm('Are you sure you want to delete this recipe?')) return;
-
-            fetch(`delete-recipe.php`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        id: recipeId
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Recipe deleted successfully!');
-                        fetchRecipes(); // Refresh the recipe list
-                    } else {
-                        alert('Error deleting recipe: ' + data.message);
-                    }
-                })
-                .catch(error => console.error('Error deleting recipe:', error));
-        }
-
         // Fetch recipes on page load
         fetchRecipes();
-        //add even listener to search button
+
+        // Add event listener to search button
         document.getElementById('search-button').addEventListener('click', () => {
             const query = document.getElementById('search-input').value.trim();
-            console.log('Search query:', query); // Log the query
             fetchRecipes(query);
-        })
-        // Optionally, refresh recipes periodically
-        // setInterval(fetchRecipes, 10000); // Fetch recipes every 10 seconds
+        });
     </script>
-
 </body>
 
 </html>
