@@ -59,7 +59,7 @@
             fetchRecipes(query);
         })
         // Optionally, refresh recipes periodically
-        // setInterval(fetchRecipes, 10000); // Fetch recipes every 10 seconds
+        setInterval(fetchRecipes, 10000); // Fetch recipes every 10 seconds
     </script>
 
 </body>

@@ -9,10 +9,10 @@ error_reporting(E_ALL);
 
 
 include 'db.php';
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $title = $_POST['title'];
-    $description = $_POST['description'];
+    $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_SPECIAL_CHARS);
+    $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_SPECIAL_CHARS);
+
     $ingredients = $_POST['ingredients'];
     $steps = $_POST['steps'];
 
