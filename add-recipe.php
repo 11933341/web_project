@@ -2,14 +2,16 @@
 include 'db.php';
 session_start();
 
-// Restrict access to the page
 if (!isset($_SESSION['role'])) {
-    die("Access denied: Login required.");
+    header('Location: login.php');
+    exit;
 }
 
-// Check user role
-$isAdmin = $_SESSION['role'] === 'admin';
+if ($_SESSION['role'] !== 'admin') {
+    die("Access denied: Admins only.");
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

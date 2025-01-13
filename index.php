@@ -13,6 +13,10 @@
     <h1>Recipe Sharing</h1>
     <div class="add-recipe-link">
         <a href="add-recipe.php">Add Recipe</a>
+        <?php if ($_SESSION['role'] === 'admin') { ?>
+            <a href="manage-users.php">Manage Users</a> 
+        <?php } ?>
+        <a href="logout.php" class="logout">Logout</a> <!-- Logout link -->
     </div>
     <div id="recipes"></div>
 
@@ -26,17 +30,17 @@
     <script>
         // Function to fetch recipes (with or without search query)
         function fetchRecipes(query = '') {
-    fetch(`ajax-fetch-recipes.php?query=${encodeURIComponent(query)}`)
-        .then(response => response.json())
-        .then(data => {
-            const recipesDiv = document.getElementById('recipes');
-            recipesDiv.innerHTML = ''; // Clear existing recipes
-            if (data.length === 0) {
-                recipesDiv.innerHTML = '<p>No recipes found.</p>';
-                return;
-            }
-            data.forEach(recipe => {
-                const recipeCard = `
+            fetch(`ajax-fetch-recipes.php?query=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const recipesDiv = document.getElementById('recipes');
+                    recipesDiv.innerHTML = ''; // Clear existing recipes
+                    if (data.length === 0) {
+                        recipesDiv.innerHTML = '<p>No recipes found.</p>';
+                        return;
+                    }
+                    data.forEach(recipe => {
+                        const recipeCard = `
                     <div class="recipe-card" data-id="${recipe.id}">
                         <h2>${recipe.title}</h2>
                         <p>${recipe.description}</p>
@@ -44,19 +48,19 @@
                         <button class="delete-button" data-id="${recipe.id}">Delete</button>
                     </div>
                 `;
-                recipesDiv.innerHTML += recipeCard;
-            });
+                        recipesDiv.innerHTML += recipeCard;
+                    });
 
-            // Attach event listeners to delete buttons
-            document.querySelectorAll('.delete-button').forEach(button => {
-                button.addEventListener('click', function () {
-                    const recipeId = this.getAttribute('data-id');
-                    deleteRecipe(recipeId);
-                });
-            });
-        })
-        .catch(error => console.error('Error fetching recipes:', error));
-}
+                    // Attach event listeners to delete buttons
+                    document.querySelectorAll('.delete-button').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const recipeId = this.getAttribute('data-id');
+                            deleteRecipe(recipeId);
+                        });
+                    });
+                })
+                .catch(error => console.error('Error fetching recipes:', error));
+        }
 
         // Function to delete a recipe
         function deleteRecipe(recipeId) {
