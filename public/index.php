@@ -1,13 +1,15 @@
 <?php
+include 'navbar.php';
 include '../config/db.php';
 session_start();
 
-// Check if the user is logged in
+// Redirect to login if the user is not logged in
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit();
 }
 
+// Get the user's role
 $role = $_SESSION['role'] ?? null;
 ?>
 <!DOCTYPE html>
@@ -22,39 +24,6 @@ $role = $_SESSION['role'] ?? null;
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="index.php">Recipe Sharing</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <?php if (isset($_SESSION['username'])): ?>
-                        <?php if ($_SESSION['role'] === 'admin'): ?>
-                            <li class="nav-item">
-                                <a class="nav-link" href="add-recipe.php">Add Recipe</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="manage-users.php">Manage Users</a>
-                            </li>
-                        <?php endif; ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="logout.php">Logout</a>
-                        </li>
-                    <?php else: ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="login.php">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="signup.php">Sign Up</a>
-                        </li>
-                    <?php endif; ?>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
     <div class="container mt-5">
         <h1 class="text-center mb-4">Recipe Sharing</h1>
         <div class="text-center mb-4">
@@ -71,7 +40,7 @@ $role = $_SESSION['role'] ?? null;
             </div>
         </div>
         <div id="recipes" class="row gy-3">
-            <!-- Recipes will be displayed here -->
+            <!-- Recipes will be dynamically displayed here -->
         </div>
     </div>
 
