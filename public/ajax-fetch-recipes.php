@@ -1,26 +1,18 @@
 <?php
-// include 'db.php';
 include '../config/db.php';
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-header('Content-Type: application/json');
+header('Content-Type: application/json'); // Ensure JSON response
 
 $query = isset($_GET['query']) ? $_GET['query'] : '';
 if ($query) {
-    $sql = $conn->prepare("select * from recipes where title like ? OR ingredients like ? order by id desc");
+    $stmt = $conn->prepare("SELECT * FROM recipes WHERE title LIKE ? OR ingredients LIKE ? ORDER BY id DESC");
     $searchTerm = '%' . $query . '%';
-    $sql->bind_param("ss", $searchTerm, $searchTerm);
-    $sql->execute();
-    $result = $sql->get_result();
+    $stmt->bind_param("ss", $searchTerm, $searchTerm);
+    $stmt->execute();
+    $result = $stmt->get_result();
 } else {
-    $result = $conn->query("select * from recipes order by id desc");
+    $result = $conn->query("SELECT * FROM recipes ORDER BY id DESC");
 }
-// $sql->execute();
-// $result=$sql->get_result();
-
-// $sql = "SELECT * FROM recipes ORDER BY id DESC";
-// $result = $conn->query($sql);
 
 $recipes = [];
 if ($result->num_rows > 0) {
@@ -31,3 +23,4 @@ if ($result->num_rows > 0) {
 
 echo json_encode($recipes);
 exit;
+?>
