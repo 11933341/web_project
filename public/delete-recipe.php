@@ -1,6 +1,8 @@
 <?php
 header('Content-Type: application/json'); // Ensure JSON response
-include 'db.php';
+// include 'db.php';
+include '../config/db.php';
+
 
 // Start session and restrict access to admins
 session_start();

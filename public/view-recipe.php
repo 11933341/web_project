@@ -1,4 +1,7 @@
-<?php include 'db.php'; ?>
+<?php 
+// include 'db.php';
+include '../config/db.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

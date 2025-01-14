@@ -8,7 +8,9 @@ ini_set('display_errors', 1); // Enable error reporting
 error_reporting(E_ALL);
 
 
-include 'db.php';
+// include 'db.php';
+include '../config/db.php';
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_SPECIAL_CHARS);
     $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_SPECIAL_CHARS);

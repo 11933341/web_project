@@ -1,5 +1,7 @@
 <?php
-include 'db.php';
+// include 'db.php';
+include '../config/db.php';
+
 session_start(); // Start session
 
 // Check if user is logged in

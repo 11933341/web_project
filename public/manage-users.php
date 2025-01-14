@@ -1,6 +1,8 @@
 <?php
 session_start();
-include 'db.php';
+// include 'db.php';
+include '../config/db.php';
+
 
 // Restrict access to admins only
 if ($_SESSION['role'] !== 'admin') {

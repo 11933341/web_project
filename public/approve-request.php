@@ -4,7 +4,9 @@ if ($_SESSION['role'] !== 'admin') {
     die(json_encode(['success' => false, 'message' => 'Access denied.']));
 }
 
-include 'db.php';
+// include 'db.php';
+include '../config/db.php';
+
 $id = intval($_GET['id']);
 
 $stmt = $conn->prepare("INSERT INTO recipes (title, description, ingredients, steps)

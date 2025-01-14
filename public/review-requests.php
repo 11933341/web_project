@@ -4,7 +4,9 @@ if ($_SESSION['role'] !== 'admin') {
     die("Access denied: Admins only.");
 }
 
-include 'db.php';
+// include 'db.php';
+include '../config/db.php';
+
 
 $result = $conn->query("SELECT * FROM recipe_requests");
 while ($row = $result->fetch_assoc()) {
