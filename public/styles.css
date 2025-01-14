@@ -120,14 +120,17 @@ form label {
     margin-top: 10px;
 }
 
-form input, form textarea {
+form input,
+form textarea {
     width: 100%;
-    padding: 10px; /* Add padding inside the input/textarea fields */
+    padding: 10px;
+    /* Add padding inside the input/textarea fields */
     margin-bottom: 15px;
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 16px;
-    box-sizing: border-box; /* Ensure padding doesn't affect the width */
+    box-sizing: border-box;
+    /* Ensure padding doesn't affect the width */
 }
 
 
@@ -148,16 +151,19 @@ form button:hover {
     transform: scale(1.05);
     transition: all 0.2s ease-in-out;
 }
+
 @media (max-width: 768px) {
     form {
         width: 90%;
     }
 }
+
 .recipe-card:hover {
     transform: scale(1.02);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     transition: all 0.2s ease-in-out;
 }
+
 .search-bar {
     text-align: center;
     margin: 20px;

@@ -17,6 +17,4 @@ if ($stmt->execute()) {
     echo json_encode(['success' => true, 'message' => 'Recipe approved and added!']);
 } else {
     echo json_encode(['success' => false, 'message' => 'Error approving request.']);
-} 
-?>
- 
+}

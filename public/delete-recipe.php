@@ -23,5 +23,3 @@ if (isset($data['id'])) {
 } else {
     echo json_encode(['success' => false, 'message' => 'Invalid request.']);
 }
-?>
-
